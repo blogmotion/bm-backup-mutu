@@ -1,0 +1,64 @@
+<?php 
+header('Content-Type: text/html; charset=utf-8');
+/**
+* Author: @xhark
+* Website: http://blogmotion.fr
+* License : Creative Commons http://creativecommons.org/licenses/by-nd/4.0/deed.fr
+* Inspired : http://www.ylegrand.com/blog/sauvegarder-ses-donnees-sur-un-hebergement-ovh-mutualise_16
+* Date: 30/04/2014
+* Version 1.0
+* Need PHP functions: system()
+* Need system functions: mysqldump, gzip
+*
+* But du script: fait un backup de la base de données MySQL, compressé en GZ
+* Purpose: Create a backup of mysql tables, GZ compressed
+*/
+
+####################################
+# VARIABLES
+# Information de la base de donnees
+$pdo_host = "";
+$pdo_user = ""; 
+$bdd_name = "";
+$pdo_pwd = "";
+# Repertoire de destination
+$dstDir = './ZIP_archives/';
+####################################
+
+// NE RIEN MODIFIER APRES CETTE LIGNE
+// debut du script
+if(systemDisabled() === true) { 
+	echo 'Erreur: votre hébergeur a désactivé la fonction PHP system(), rendant ce script est incompatible.';
+	exit;
+}
+$startTime = time();
+$dstFile = "backup-mysql_" . date('Y-m-d_H\hi\_s') . ".gz";
+$dst = $dstDir . $dstFile;
+
+if(creeDirDst($dstDir) === false) { echo "Erreur: impossible de créer le répertoire de destination"; exit; }
+
+# lancement du mysqldump
+system("mysqldump -h".$pdo_host." -u".$pdo_user." -p".$pdo_pwd." ".$bdd_name." | gzip> ".$dst);
+echo "✔ Backup ZIP MySQL OK (en ".temps($startTime)." secondes pour un poids de ".round(filesize($dst)/1024/1024)." mo)";
+
+####################################
+# FONCTIONS
+function temps($startTime) { $now = time();	return ($now-$startTime); }
+
+# crée le répertoire de destination s'il n'existe pas
+function creeDirDst($rep) {
+	if (!is_dir($rep)) { if(mkdir($rep) !== true) return false;	}
+	# generation htaccess du protection des archives (s'il n'existe pas)
+	if(!is_file($rep.'/.htaccess')) @file_put_contents($rep.'/.htaccess', 'deny from all');
+	return true;
+}
+
+# renvoi true si system() est désactivé
+function systemDisabled() {
+	$disabled = explode(',', ini_get('disable_functions'));
+	array_walk($disabled, 'trima');
+	return in_array('system', $disabled);
+}
+
+function trima(& $t) { $t = trim($t); }
+?>
