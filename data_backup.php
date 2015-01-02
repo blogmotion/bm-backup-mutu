@@ -6,7 +6,8 @@ header('Content-Type: text/html; charset=utf-8');
 * License : Creative Commons http://creativecommons.org/licenses/by-nd/4.0/deed.fr
 * Inspired : http://www.daniweb.com/web-development/php/threads/467398/backup-server-script
 * Date: 30/04/2014
-* Version 1.0
+* Update: 02/01/2015
+* Version 1.1
 * PHP >= 5.2
 *
 * But du script : crée un backup d'un dossier au format ZIP, récursivement.
@@ -41,6 +42,8 @@ $sourceDir = "../";
 
 // NE RIEN MODIFIER APRES CETTE LIGNE
 // debut du script
+@ignore_user_abort(1);	// exécution du script en arrière plan, même si utilisateur arrête le chargement navigateur
+@set_time_limit(0);		// exécution du script sans limite de temps
 # check version php
 if (strnatcmp(phpversion(),'5.2.0') < 0) exit("Vous devez utiliser <strong>PHP5 ou supérieur</strong>. Vous utilisez <strong>".phpversion()."</strong>");
 $startTime = time();

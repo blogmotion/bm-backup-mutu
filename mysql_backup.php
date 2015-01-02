@@ -6,7 +6,8 @@ header('Content-Type: text/html; charset=utf-8');
 * License : Creative Commons http://creativecommons.org/licenses/by-nd/4.0/deed.fr
 * Inspired : http://www.ylegrand.com/blog/sauvegarder-ses-donnees-sur-un-hebergement-ovh-mutualise_16
 * Date: 30/04/2014
-* Version 1.0
+* Update: 02/01/2015
+* Version 1.1
 * Need PHP functions: system()
 * Need system functions: mysqldump, gzip
 *
@@ -27,6 +28,9 @@ $dstDir = './ZIP_archives/';
 
 // NE RIEN MODIFIER APRES CETTE LIGNE
 // debut du script
+@ignore_user_abort(1);	// exécution du script en arrière plan, même si utilisateur arrête le chargement navigateur
+@set_time_limit(0);		// exécution du script sans limite de temps
+
 if(systemDisabled() === true) { 
 	echo 'Erreur: votre hébergeur a désactivé la fonction PHP system(), rendant ce script est incompatible.';
 	exit;
