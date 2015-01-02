@@ -1,4 +1,4 @@
-bm-b (blogmotion backup)
+bm-backup (blogmotion backup)
 ===
 
 ###Description###
