@@ -1,4 +1,4 @@
-bm-backup (blogmotion backup)
+bm-backup-mutu (blogmotion backup mutualisé)
 ===
 
 ###Description###
