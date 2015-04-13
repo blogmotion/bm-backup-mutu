@@ -36,14 +36,19 @@ if(systemDisabled() === true) {
 	exit;
 }
 $startTime = time();
-$dstFile = "backup-mysql_" . date('Y-m-d_H\hi\_s') . ".gz";
+$dstFile = "backup-mysql_" . date('Y-m-d_H\hi\_s') . ".sql.gz";
 $dst = $dstDir . $dstFile;
 
 if(creeDirDst($dstDir) === false) { echo "Erreur: impossible de créer le répertoire de destination"; exit; }
 
 # lancement du mysqldump
-system("mysqldump -h".$pdo_host." -u".$pdo_user." -p".$pdo_pwd." ".$bdd_name." | gzip> ".$dst);
-echo "✔ Backup ZIP MySQL OK (en ".temps($startTime)." secondes pour un poids de ".round(filesize($dst)/1024/1024)." mo)";
+system("mysqldump".
+	" -h".escapeshellarg($pdo_host).
+	" -u".escapeshellarg($pdo_user).
+	" -p".escapeshellarg($pdo_pwd).
+	" ".escapeshellarg($bdd_name).
+	" | gzip> ".$dst);
+echo "✔ Backup gzip MySQL OK (en ".temps($startTime)." secondes pour un poids de ".round(filesize($dst)/1024/1024)." mo)";
 
 ####################################
 # FONCTIONS
@@ -65,4 +70,3 @@ function systemDisabled() {
 }
 
 function trima(& $t) { $t = trim($t); }
-?>
