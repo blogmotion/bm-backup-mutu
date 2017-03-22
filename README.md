@@ -9,7 +9,7 @@ Script de sauvegarde pour hébergement mutualisé (OVH par exemple). Les fichier
 - data_backup.php (permet la sauvegarde des données)
 - mysql_backup.php (permet la sauvegarde d'une base mysql)
 
-## 🚦 Configuration minimale
+### 🚦 Configuration minimale
 La sauvegarde des données (data_backup.php) **fonctionne uniquement avec PHP >=5.2**
 Dans le cas contraire vous aurez un message d'erreur *"unexpected..."*
 
